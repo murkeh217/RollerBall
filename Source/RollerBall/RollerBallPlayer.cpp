@@ -89,9 +89,9 @@ void ARollerBallPlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherAc
 {
 	//get direction we hit the surface on z axis
 	const float HitDirection = Hit.Normal.Z;
-	GEngine->AddOnScreenDebugMessage(-1,15.0f,FColor::Orange,FString::Printf(TEXT("%f"), HitDirection));
 
-	//UE_LOG() goes to console
+	//GEngine->AddOnScreenDebugMessage(-1,0.1f,FColor::Orange,FString::Printf(TEXT("%f"), HitDirection));
+	//UE_LOG() output goes to console
 	
 	//If it is more than 0 then we have hit something below us. 1 is flat, anything between is a slope.
 	if(HitDirection > 0)

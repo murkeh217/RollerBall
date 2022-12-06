@@ -55,6 +55,8 @@ private:
 	void MoveRight(float Value);
 	void MoveForward(float Value);
 	void Jump();
-	
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	int32 JumpCount = 0;
 };

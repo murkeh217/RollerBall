@@ -27,13 +27,20 @@ ARollerBallPlayer::ARollerBallPlayer()
 	//attaching the camera to springarm so camera will follow springarm transform
 	Camera->SetupAttachment(SpringArm);
 
+	//set physics to true
+	Mesh->SetSimulatePhysics(true);
 }
 
 // Called when the game starts or when spawned
 void ARollerBallPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//account for mass in MoveForce
+	MoveForce *= Mesh->GetMass();
+	JumpImpulse *= Mesh->GetMass();
+
+	Mesh->OnComponentHit.AddDynamic(this, &ARollerBallPlayer::OnHit);
 }
 
 // Called every frame
@@ -69,7 +76,28 @@ void ARollerBallPlayer::MoveForward(float Value)
 
 void ARollerBallPlayer::Jump()
 {
-	Mesh->AddImpulse(FVector(0,0,JumpImpulse));
+	//limit the number of jumps we can make
+	if(JumpCount >= MaxJumpCount){return;}
+	//apply an impulse to the mesh in z axis
+	Mesh->AddImpulse(FVector(0,0, JumpImpulse));
+	//track jump times
+	JumpCount++;
+}
+
+void ARollerBallPlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	//get direction we hit the surface on z axis
+	const float HitDirection = Hit.Normal.Z;
+	GEngine->AddOnScreenDebugMessage(-1,15.0f,FColor::Orange,FString::Printf(TEXT("%f"), HitDirection));
+
+	//UE_LOG() goes to console
+	
+	//If it is more than 0 then we have hit something below us. 1 is flat, anything between is a slope.
+	if(HitDirection > 0)
+	{
+		JumpCount = 0;
+	}
 }
 
 //:: -> . Operators

@@ -3,15 +3,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameStateBase.h"
+#include "GameFramework/GameModeBase.h"
 #include "RollerBallGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ROLLERBALL_API ARollerBallGameModeBase : public AGameStateBase
+class ROLLERBALL_API ARollerBallGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+protected:
+
+	int32 ItemsCollected = 0;
+	int32 ItemsInLevel = 0;
+
+	//widget variables
+
+	virtual void BeginPlay() override;
+
+	void UpdateItemText();
+
+public:
+
+	void ItemCollected();
 	
 };

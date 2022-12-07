@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "RollerBallGameModeBase.generated.h"
 
+class URollerBallWidget;
 /**
  * 
  */
@@ -20,6 +21,11 @@ protected:
 	int32 ItemsInLevel = 0;
 
 	//widget variables
+	UPROPERTY(EditAnywhere, Category="Widgets")
+	TSubclassOf<class UUserWidget> GameWidgetClass;
+
+	UPROPERTY()
+	URollerBallWidget* GameWidget;
 
 	virtual void BeginPlay() override;
 

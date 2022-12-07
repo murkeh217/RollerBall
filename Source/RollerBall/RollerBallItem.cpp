@@ -3,6 +3,7 @@
 
 #include "RollerBallItem.h"
 
+#include "RollerBallGameModeBase.h"
 #include "RollerBallPlayer.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -36,7 +37,12 @@ void ARollerBallItem::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 
 void ARollerBallItem::Collected_Implementation()
 {
-	//do gamemode stuffs
+	ARollerBallGameModeBase* GameMode = Cast<ARollerBallGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	if(GameMode)
+	{
+		GameMode->ItemCollected();
+	}
 }
 
 // Called every frame
